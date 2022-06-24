@@ -1,6 +1,6 @@
 import './App.css';
 
-import parth, { domToReact, Element } from 'html-react-parser';
+import parth, { Element } from 'html-react-parser';
 import { jsxElementGenerator } from './lib/jsxElementGenerator';
 import React from 'react';
 
@@ -43,7 +43,7 @@ function App() {
     //     }
     //   }
     //   const temp = resultElements.map((result,index) => <React.Fragment key={index}>{result}</React.Fragment>)
-    //   return temp;
+    //   return <>{temp}</>;
     // },
 
     replace: (domNode) => {
@@ -53,9 +53,15 @@ function App() {
       const resultElements: Array<JSX.Element> = [];
 
       resultElements.push(...jsxElementGenerator(domNode));
-        const temp = resultElements.map((result,index) => <React.Fragment key={index}>{result}</React.Fragment>)
-        return temp;
-      // return <React.Fragment >{resultElements.map((result) => result)}</React.Fragment>;
+      // const temp = resultElements.map((result, index) => <React.Fragment key={index}>{result}</React.Fragment>);
+      // return temp;
+      return (
+        <>
+          {resultElements.map((result, index) => (
+            <React.Fragment key={index}>{result}</React.Fragment>
+          ))}
+        </>
+      );
     },
   });
 

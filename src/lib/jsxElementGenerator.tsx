@@ -97,8 +97,8 @@ const innerJsxElementGenerator = (
           id={`${resultElements.length}-${loopCount}-${results[0].name}`}
         >
           <>
-            {results.map((result) => {
-              return resultsMap(result);
+            {results.map((result,index) => {
+              return <Fragment key={index}>{resultsMap(result)}</Fragment>;
             })}
           </>
         </Component>
@@ -116,8 +116,13 @@ const resultsMap = (result: { child: Node; name: string; data: string }) => {
   if (result.child instanceof Element) {
     const innerResultElements: Array<JSX.Element> = [];
     innerResultElements.push(...jsxElementGenerator(result.child));
-    const temp = innerResultElements.map((result,index) => <Fragment key={index}>{result}</Fragment>);
-    return temp;
+    return (
+      <>
+        {innerResultElements.map((result, index) => (
+          <Fragment key={index}>{result}</Fragment>
+        ))}
+      </>
+    );
   } else if (result.child instanceof Text) {
     return result.child.data;
   } else {
