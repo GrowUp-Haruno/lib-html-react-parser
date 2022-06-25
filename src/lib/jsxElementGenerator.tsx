@@ -52,8 +52,6 @@ const innerJsxElementGenerator = (
   resultElements: Array<JSX.Element>,
   Component: FC<{
     children?: JSX.Element;
-    key: string;
-    id: string;
     anchorAttr?: React.AnchorHTMLAttributes<HTMLAnchorElement>;
     imgAttr?: React.ImgHTMLAttributes<HTMLImageElement>;
   }>
@@ -67,16 +65,8 @@ const innerJsxElementGenerator = (
     return { child: child, name: '', data: '' };
   });
 
-  let loopCount = 1;
-
   if (domNode.name === 'img') {
-    resultElements.push(
-      <Component
-        imgAttr={domNode.attribs}
-        key={`${resultElements.length}-${loopCount}`}
-        id={`${resultElements.length}-${loopCount}`}
-      />
-    );
+    resultElements.push(<Component imgAttr={domNode.attribs} />);
   }
 
   while (list.length) {
@@ -92,23 +82,18 @@ const innerJsxElementGenerator = (
 
       // 内容をセットする
       resultElements.push(
-        <Component
-          key={`${resultElements.length}-${loopCount}-${results[0].name}`}
-          id={`${resultElements.length}-${loopCount}-${results[0].name}`}
-        >
+        <Component>
           <>
-            {results.map((result,index) => {
+            {results.map((result, index) => {
               return <Fragment key={index}>{resultsMap(result)}</Fragment>;
             })}
           </>
         </Component>
-
       );
     } else {
       // 主にbrなど不要なタグを削除
       list.splice(0, 1);
     }
-    loopCount++;
   }
 };
 
